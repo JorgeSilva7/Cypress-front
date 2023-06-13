@@ -1,0 +1,21 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+      - master
+      - staging
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+      - run: npm install
+      - run: npm run serve
+      - run: npm run e2e
