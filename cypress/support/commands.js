@@ -27,7 +27,7 @@
 Cypress.Commands.add("login", (email, password) => {
 	cy.request({
 		method: "POST",
-		url: `http://localhost:3000/login`,
+		url: `http://3.89.221.7:3000/login`,
 		body: {
 			email,
 			password,
