@@ -5,7 +5,7 @@
         <q-item clickable v-ripple id="user" @click="showRut = true">
           <q-item-section side>
             <q-avatar rounded size="80px">
-              <img src="https://cdn.quasar.dev/img/avatar.png" />
+              <img :src="user.photo" />
               <q-badge floating :color="user.verified ? 'teal' : 'red'">{{
                 user.verified ? "verified" : "unverified"
               }}</q-badge>
@@ -64,7 +64,7 @@
         </q-card-section>
         <q-card-section class="text-center">
           <q-avatar rounded size="350px">
-            <img src="https://cdn.quasar.dev/img/avatar.png" />
+            <img :src="user.photo" />
           </q-avatar>
         </q-card-section>
 

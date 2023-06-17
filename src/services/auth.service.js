@@ -22,6 +22,17 @@ export function login({ email, password }) {
 		}));
 }
 
+export function register({ email, password, name, rut }) {
+	return axiosInstance
+		.post(`${BASE_URL}/register`, { email, password, name, rut })
+		.then((response) => response.data)
+		.catch((error) => ({
+			error: true,
+			name: error.response.data?.error?.name || "Error",
+			message: error.response.data?.error?.msg || "Error",
+		}));
+}
+
 export function verify({ code }) {
 	return axiosInstance
 		.post(`${BASE_URL}/verify`, { code })

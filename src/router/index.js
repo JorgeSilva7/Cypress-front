@@ -18,6 +18,13 @@ const routes = [
 		meta: { requiresAuth: false },
 	},
 	{
+		path: "/register",
+		name: "register",
+		component: () =>
+			import(/* webpackChunkName: "login" */ "../views/Register.vue"),
+		meta: { requiresAuth: false },
+	},
+	{
 		path: "/verify",
 		name: "verify",
 		component: () =>

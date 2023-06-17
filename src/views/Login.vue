@@ -1,11 +1,12 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px; margin: auto">
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+    <div class="text-h3" style="padding: 50px 0px">Sign in</div>
+    <q-form @submit="onSubmit" class="q-gutter-md">
       <q-input
         for="login-email"
         filled
         v-model="email"
-        label="Login"
+        label="Email"
         hint="Email"
         lazy-rules
         type="email"
@@ -23,23 +24,21 @@
           (val) => (val !== null && val !== '') || 'Please type your password',
         ]"
       />
-
+      <p>
+        Don't have an account?
+        <router-link to="/register" class="text-weight-light"
+          >Sign up here</router-link
+        >
+      </p>
       <div>
-        <q-btn id="login-submit" label="Submit" type="submit" color="primary" />
-        <q-btn
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
+        <q-btn id="login-submit" label="Login" type="submit" color="primary" />
       </div>
     </q-form>
   </div>
 </template>
 
 <script>
-import { axiosInstance, login } from "@/services/auth.service";
+import { login } from "@/services/auth.service";
 import { setToken } from "@/services/helpers";
 import { useQuasar } from "quasar";
 import { ref } from "vue";
@@ -89,11 +88,6 @@ export default {
 
           await router.push({ name: "home" });
         }
-      },
-
-      onReset() {
-        email.value = null;
-        password.value = null;
       },
 
       onLoginError() {
