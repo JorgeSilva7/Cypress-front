@@ -8,34 +8,34 @@ const routes = [
 		path: "/",
 		name: "home",
 		component: HomeView,
-		meta: { requiresAuth: true },
+		meta: { requiresAuth: true, title: "Pruebas de software - Ev.3" },
 	},
 	{
 		path: "/login",
 		name: "login",
 		component: () =>
 			import(/* webpackChunkName: "login" */ "../views/Login.vue"),
-		meta: { requiresAuth: false },
+		meta: { requiresAuth: false, title: "Sign in" },
 	},
 	{
 		path: "/register",
 		name: "register",
 		component: () =>
 			import(/* webpackChunkName: "login" */ "../views/Register.vue"),
-		meta: { requiresAuth: false },
+		meta: { requiresAuth: false, title: "Sign out" },
 	},
 	{
 		path: "/verify",
 		name: "verify",
 		component: () =>
 			import(/* webpackChunkName: "verify" */ "../views/Verify.vue"),
-		meta: { requiresAuth: true },
+		meta: { requiresAuth: true, title: "Verify" },
 	},
 	{ path: "/:pathMatch(.*)*", component: NotFoundView },
 ];
 
 const router = createRouter({
-	history: createWebHistory(""),
+	history: createWebHistory(),
 	routes,
 });
 
@@ -58,6 +58,8 @@ router.beforeEach((to, from) => {
 			name: "home",
 		};
 	}
+
+	document.title = to.meta.title;
 });
 
 export default router;
