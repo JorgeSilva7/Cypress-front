@@ -26,8 +26,8 @@ e2e tests:
     - npm ci
     - npm install -g serve
     - npm install -g wait-on
-    - serve -l 8080 -s dist &
-    - wait-on http://localhost:8080
+    - serve -s dist &
+    - wait-on http://localhost:3000
     - npm run e2e
   artifacts:
     when: always
