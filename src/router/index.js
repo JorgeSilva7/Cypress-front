@@ -1,35 +1,56 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import NotFoundView from "../views/404.vue";
+import { getToken } from "@/services/helpers";
 
 const routes = [
 	{
 		path: "/",
 		name: "home",
 		component: HomeView,
-	},
-	{
-		path: "/about",
-		name: "about",
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () =>
-			import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+		meta: { requiresAuth: true },
 	},
 	{
 		path: "/login",
 		name: "login",
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () =>
-			import(/* webpackChunkName: "about" */ "../views/Login.vue"),
+			import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+		meta: { requiresAuth: false },
 	},
+	{
+		path: "/verify",
+		name: "verify",
+		component: () =>
+			import(/* webpackChunkName: "verify" */ "../views/Verify.vue"),
+		meta: { requiresAuth: true },
+	},
+	{ path: "/:pathMatch(.*)*", component: NotFoundView },
 ];
 
 const router = createRouter({
-	history: createWebHistory(process.env.BASE_URL),
+	history: createWebHistory(""),
 	routes,
+});
+
+router.beforeEach((to, from) => {
+	if (to.meta.requiresAuth && !getToken()) {
+		return {
+			name: "login",
+			query: { login_error: "1" },
+		};
+	}
+
+	if (to.name === "login" && getToken()) {
+		return {
+			name: "home",
+		};
+	}
+
+	if (to.name === "verify" && localStorage.getItem("verified")) {
+		return {
+			name: "home",
+		};
+	}
 });
 
 export default router;

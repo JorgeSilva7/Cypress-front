@@ -4,7 +4,9 @@ describe("Home E2E", () => {
 
 		cy.visit("/");
 
-		cy.get(".user-name").should("contain.text", "John Doe");
+		cy.get(".user-name").should("have.text", "John Doe");
+		cy.get(".user-rut").should("have.text", "22.222****");
+		cy.get(".user-email").should("have.text", "john@example.com");
 	});
 
 	it("Home incorrect", () => {
@@ -14,6 +16,14 @@ describe("Home E2E", () => {
 
 		cy.visit("/");
 
-		cy.get(".q-banner").should("contain.text", "No estas logueado.");
+		cy.get("div")
+			.find(".q-notification")
+			.should("be.visible")
+			.and("contain.text", "Please enter your credentials");
+
+		cy.on("url:changed", (newurk) => {
+			console.log(newurk);
+			cy.url().should("eq", `${Cypress.config().baseUrl}/login?login_error=1`);
+		});
 	});
 });

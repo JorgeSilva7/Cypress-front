@@ -39,12 +39,17 @@
 </template>
 
 <script>
-import { login } from "@/services/auth.service";
+import { axiosInstance, login } from "@/services/auth.service";
+import { setToken } from "@/services/helpers";
 import { useQuasar } from "quasar";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
+  name: "LoginView",
+  mounted() {
+    this.onLoginError();
+  },
   setup() {
     const router = useRouter();
 
@@ -58,10 +63,13 @@ export default {
       password,
 
       async onSubmit() {
+        $q.loading.show();
         const response = await login({
           email: email.value,
           password: password.value,
         });
+        $q.loading.hide();
+
         if (response.error) {
           $q.notify({
             color: "red-4",
@@ -77,7 +85,7 @@ export default {
             message: "Login correcto",
           });
 
-          localStorage.setItem("token", response.token);
+          setToken(response.token);
 
           await router.push({ name: "home" });
         }
@@ -86,6 +94,17 @@ export default {
       onReset() {
         email.value = null;
         password.value = null;
+      },
+
+      onLoginError() {
+        if (this.$route.query.login_error === "1") {
+          $q.notify({
+            color: "red-4",
+            textColor: "white",
+            icon: "warning",
+            message: "Please enter your credentials",
+          });
+        }
       },
     };
   },
